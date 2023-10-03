@@ -1,20 +1,29 @@
 {
-  "name": "telegram-image-bot",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "telegram-media-gardener",
+  "version": "0.1",
+  "main": "dist/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
+    "qa": "npm run lint",
+    "prepack": "npm run qa"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Othmane",
+  "license": "GPL-3.0-or-later",
   "dependencies": {
     "dotenv": "^16.3.1",
     "node-telegram-bot-api": "^0.63.0"
   },
-  "description": "",
+  "description": "Telegram Media Gardener - Keep your chat media together, in one place.",
   "devDependencies": {
     "@types/node": "^20.7.2",
-    "@types/node-telegram-bot-api": "^0.61.8"
+    "@types/node-telegram-bot-api": "^0.61.8",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "eslint": "^8.50.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "prettier": "^3.0.3"
   }
 }
