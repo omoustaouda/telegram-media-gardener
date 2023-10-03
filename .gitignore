@@ -2,7 +2,7 @@
 .env
 
 # Storage files
-#storage/
+storage/
 
 # Dependencies
 node_modules

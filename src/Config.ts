@@ -4,9 +4,7 @@ dotenv.config();
 
 export default {
   TELEGRAM: {
-    bot_token: process.env.TELEGRAM_BOT_TOKEN || '',
-    incoming_files_dir: '../storage/incoming_files',
-    // ... any other Telegram-specific configs
+    botToken: process.env.TELEGRAM_BOT_TOKEN || '',
+    incomingFilesPath: './storage/incoming_files',
   },
-  // ... other configs like Google Photos, Dropbox, etc.
 };
