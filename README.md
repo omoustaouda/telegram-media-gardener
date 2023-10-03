@@ -1,5 +1,8 @@
 # Telegram Media Gardener - Keep your chat media together, in one place.
 
+![](doc/cover.jpg)
+(Image license: Creative Commons Zero - CC0, [source](https://www.peakpx.com/437865/aerial-photography-of-vegetable-market))
+
 ## Overview
 
 The Telegram Media Gardener bot serves as a seamless service to bridge Telegram with various photo and media storage solutions. Initially designed for Google Photos, its modular architecture can be extended to support other storage backends like SFTP, Nextcloud, PrismPhotos, Dropbox, ..., .
@@ -72,3 +75,15 @@ telegram-media-gardener/
 ├── tsconfig.json
 └── README.md
 ```
+
+## For the ones coming here trough search engines
+
+### Questions and keywords to make easier to find this bot
+
+- how to connect telegram with google photos?
+- telegram bot upload google photos
+
+and in the future, trough adding new [storage drivers](./src/drivers/):
+
+- integration telegram next cloud
+- dropbox telegram integration
