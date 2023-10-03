@@ -1,3 +1,3 @@
 export interface StorageDriver {
-    uploadFile(filePath: string): Promise<void>;
+  uploadFile(filePath: string): Promise<void>
 }

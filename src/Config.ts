@@ -1,7 +1,7 @@
-import dotenv from 'dotenv';
-import {GooglePhotosDriver} from "./drivers/GooglePhotosDriver";
+import dotenv from 'dotenv'
+import { GooglePhotosDriver } from './drivers/GooglePhotosDriver'
 
-dotenv.config();
+dotenv.config()
 
 export default {
   telegram: {
@@ -10,5 +10,5 @@ export default {
   },
   storage: {
     driverName: GooglePhotosDriver.name,
-  }
-};
+  },
+}

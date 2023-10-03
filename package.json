@@ -1,7 +1,7 @@
 {
   "name": "telegram-media-gardener",
   "version": "0.1",
-  "main": "dist/main.js",
+  "main": "build/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
