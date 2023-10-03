@@ -1,8 +1,8 @@
-# Telgram Media Gardener - Keep your media together, in one place.
+# Telegram Media Gardener - Keep your chat media together, in one place.
 
 ## Overview
 
-The Telegram Media Gardenerbot serves as a seamless service to bridge Telegram with various photo storage solutions. Initially designed for Google Photos, its modular architecture can be extended to support other storage backends like SFTP, Nexcloud, PrismPhotos, Dropbox, ..., .
+The Telegram Media Gardener bot serves as a seamless service to bridge Telegram with various photo and media storage solutions. Initially designed for Google Photos, its modular architecture can be extended to support other storage backends like SFTP, Nextcloud, PrismPhotos, Dropbox, ..., .
 
 ## Architecture
 
@@ -51,7 +51,7 @@ TODO: Guidelines for contributing to the project.
 ## License
 GNU General Public License v3.0
 
-## Suggested directory structure
+## Project directory structure
 
 ```
 telegram-media-gardener/

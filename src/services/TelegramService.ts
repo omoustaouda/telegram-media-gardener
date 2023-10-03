@@ -1,6 +1,7 @@
 import TelegramBot, { Message } from 'node-telegram-bot-api';
 import fs from 'fs';
 import path from 'path';
+import {StorageDriver} from "../drivers/StorageDriver";
 
 interface TelegramServiceConfig {
     botToken: string;
@@ -8,22 +9,25 @@ interface TelegramServiceConfig {
 }
 
 export class TelegramService {
-    private bot: TelegramBot;
-    private readonly dir: string;
+    private readonly bot: TelegramBot;
+    private readonly incomingFilesPath: string;
+    private readonly storageDriver: StorageDriver;
 
-    constructor(config: TelegramServiceConfig) {
+    constructor(storageDriver: StorageDriver, config: TelegramServiceConfig) {
         this.bot = new TelegramBot(config.botToken, { polling: true });
-        this.dir = config.incomingFilesPath;
+        this.incomingFilesPath = config.incomingFilesPath;
+        this.storageDriver = storageDriver;
         this.initialize();
     }
 
     private initialize() {
-        if (!fs.existsSync(this.dir)) {
-            fs.mkdirSync(this.dir);
+        if (!fs.existsSync(this.incomingFilesPath)) {
+            fs.mkdirSync(this.incomingFilesPath);
         }
 
         // listen
         this.bot.on('message', this.handleMessage.bind(this));
+        console.log('Listening for new messages with media...')
     }
 
     private handleMessage(msg: Message) {
@@ -31,7 +35,8 @@ export class TelegramService {
         let fileId: string | undefined;
         let originalFilename: string | undefined;
 
-        console.log(msg);
+        const messageId = msg.message_id ? msg.message_id : 'undefined';
+        console.log(`Processing new message... (id: ${messageId})`);
 
         if (msg.photo) {
             // photos are sorted by size, we get the last for the highest resolution
@@ -55,22 +60,42 @@ export class TelegramService {
             return;
         }
 
-        this.downloadAndSaveFile(fileId, originalFilename, chatId);
+        this.downloadAndSaveFile(fileId, originalFilename, chatId)
+            .then(newFilePath => {
+                if (newFilePath) {
+                    // now that the file is saved, we can upload it using the storage driver
+                    this.storageDriver.uploadFile(newFilePath)
+                        .then(() => {
+                            this.bot.sendMessage(
+                                chatId,
+                                `File uploaded - ${this.storageDriver.constructor.name}: ${newFilePath}`
+                            );
+                        })
+                        .catch(error => {
+                            console.error(`Failed to upload the file - ${this.storageDriver.constructor.name}: ${error}`);
+                        });
+                }
+            })
+            .catch(error => {
+                console.error(`Failed to download and save the file from Telegram servers: ${error}`);
+            });
     }
 
-    private async downloadAndSaveFile(fileId: string, originalFilename: string | undefined, chatId: number) {
+    private async downloadAndSaveFile(fileId: string, originalFilename: string | undefined, chatId: number): Promise <string | undefined> {
         try {
-            const filePath: string = await this.bot.downloadFile(fileId, this.dir);
-            let newFilePath = path.join(this.dir, fileId + path.extname(filePath));
+            const filePath: string = await this.bot.downloadFile(fileId, this.incomingFilesPath);
+            let newFilePath = path.join(this.incomingFilesPath, fileId + path.extname(filePath));
 
             if (originalFilename) {
-                newFilePath = path.join(this.dir, originalFilename);
+                newFilePath = path.join(this.incomingFilesPath, originalFilename);
             }
 
             fs.renameSync(filePath, newFilePath);
 
             console.log(`File saved to: ${newFilePath}`);
             await this.bot.sendMessage(chatId, `File saved locally at: ${newFilePath}`);
+
+            return newFilePath;
         } catch (error) {
             console.error(`Failed to download and save the file: ${error}`);
         }
